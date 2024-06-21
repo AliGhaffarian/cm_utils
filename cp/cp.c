@@ -11,19 +11,30 @@
 #define DEBUG_PREFIX "DEBUG : "
 #define VERBOSE_PREFIX "VERBOSE : "
 
+
 int do_create = 0;
+char do_create_help[] = "-c : create destination file if doesn't exist";
+
 int block_size = 128;
+char block_size_help[] = "-b [SIZE] : size of transfer buffer bigger block size typically means faster transfer of data";
+
 int do_debug = 0;
+char do_debug_help[] = "-d :  print debug logs";
+
 int do_verbose = 0;
+char do_verbose_help[] = "-v : note implemented";
+
 int overwrite = 0;
+char overwrite_help[] = "-f : overwrite destination file without asking";
+
 int creat_chmod_mask = S_IRUSR | S_IRGRP | S_IROTH;
+
 char* src_path = NULL;
 char* dst_path = NULL;
 
 /*
    options to do:
    */
-
 void finish_and_exit(int* fd_to_close){
 		int i = 0;
 		while(i < FD_ARR_SIZE){
@@ -46,14 +57,14 @@ int read_for_confirm(){
 
 void init_args(int argc, char** argv){
 		int opt;
-		while((opt = getopt(argc, argv, "cdvfb:")) != -1){
+		while((opt = getopt(argc, argv, "hcdvfb:")) != -1){
 				switch(opt){
 						case 'd':{
 										 do_debug = 1;
 										 break;
 								 }
 						case 'v':{
-										 do_debug = 1;
+										 do_verbose = 1;
 										 break;
 								 }
 						case 'b':{
@@ -74,6 +85,15 @@ void init_args(int argc, char** argv){
 						case 'c':{
 										 do_create = 1;
 										 break;
+								 }
+						case 'h':{
+										 printf("usage : %s [OPTIONS] source_file_path destination_file_path\n", argv[0]);
+										 printf("%s\n", do_debug_help);
+										 printf("%s\n", do_verbose_help);
+										 printf("%s\n", block_size_help);
+										 printf("%s\n", overwrite_help);
+										 printf("%s\n", do_create_help);
+										 exit(1);
 								 }
 						default:break;
 				}
